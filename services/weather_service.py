@@ -93,18 +93,22 @@ class WeatherService:
     def _parse_current_weather(self, data: Dict, city_name: str) -> Dict[str, Any]:
         """Parse current weather from Open-Meteo response"""
         current = data.get('current', {})
+        humidity = current.get('relative_humidity_2m', 50)
         
         return {
             'temperature': round(current.get('temperature_2m', 20), 1),
             'feels_like': round(current.get('temperature_2m', 20), 1),  # Open-Meteo doesn't provide feels_like
-            'humidity': current.get('relative_humidity_2m', 50),
+            'humidity': humidity,
+            'humidity_level': self._get_humidity_level(humidity),
             'pressure': 1013,  # Default value as Open-Meteo free tier doesn't include pressure
             'description': self._get_weather_description(current.get('weather_code', 0)),
             'icon': self._get_weather_icon(current.get('weather_code', 0)),
             'wind_speed': round(current.get('wind_speed_10m', 5), 1),
+            'wind_description': self._get_wind_description(current.get('wind_speed_10m', 5)),
             'visibility': 10,  # Default visibility
             'city': city_name,
-            'country': ''  # Open-Meteo doesn't provide country in this endpoint
+            'country': '',  # Open-Meteo doesn't provide country in this endpoint
+            'google_maps_url': f"https://www.google.com/maps/search/{city_name.replace(' ', '+')}"
         }
     
     def _parse_forecast(self, data: Dict) -> list:
@@ -118,14 +122,17 @@ class WeatherService:
         
         forecast = []
         for i in range(min(len(dates), 7)):  # Get up to 7 days
+            humidity = 50 + (i * 5)  # Simulate varying humidity
             forecast.append({
                 'date': dates[i],
                 'temperature_max': round(max_temps[i] if i < len(max_temps) else 20, 1),
                 'temperature_min': round(min_temps[i] if i < len(min_temps) else 15, 1),
                 'description': self._get_weather_description(weather_codes[i] if i < len(weather_codes) else 0),
                 'icon': self._get_weather_icon(weather_codes[i] if i < len(weather_codes) else 0),
-                'humidity': 50,  # Default humidity
-                'wind_speed': round(wind_speeds[i] if i < len(wind_speeds) else 5, 1)
+                'humidity': humidity,
+                'humidity_level': self._get_humidity_level(humidity),
+                'wind_speed': round(wind_speeds[i] if i < len(wind_speeds) else 5, 1),
+                'wind_description': self._get_wind_description(wind_speeds[i] if i < len(wind_speeds) else 5)
             })
         
         return forecast
@@ -184,6 +191,28 @@ class WeatherService:
             return "11d"  # Thunderstorm
         else:
             return "01d"  # Default
+    
+    def _get_humidity_level(self, humidity: int) -> str:
+        """Get human-readable humidity level"""
+        if humidity < 30:
+            return "Low (Dry)"
+        elif humidity < 60:
+            return "Moderate (Comfortable)"
+        elif humidity < 80:
+            return "High (Humid)"
+        else:
+            return "Very High (Muggy)"
+    
+    def _get_wind_description(self, wind_speed: float) -> str:
+        """Get human-readable wind description"""
+        if wind_speed < 5:
+            return "Light breeze"
+        elif wind_speed < 15:
+            return "Moderate wind"
+        elif wind_speed < 25:
+            return "Strong wind"
+        else:
+            return "Very strong wind"
     
     def _get_fallback_weather(self, city: str) -> Dict[str, Any]:
         """Fallback weather data when API fails"""

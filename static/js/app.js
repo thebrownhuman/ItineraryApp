@@ -294,23 +294,43 @@ function displayWeather(weather) {
                 <h4>Current Weather</h4>
                 <div class="temperature">${Math.round(weather.current.temperature)}°C</div>
                 <div class="description">${weather.current.description}</div>
-                <div style="margin-top: 10px; color: #6c757d; font-size: 0.9rem;">
-                    Feels like ${Math.round(weather.current.feels_like)}°C<br>
-                    Humidity: ${weather.current.humidity}%<br>
-                    Wind: ${weather.current.wind_speed} m/s
+                <div class="weather-details">
+                    <div class="humidity-info">
+                        <span>💧 ${weather.current.humidity}%</span>
+                        <span class="humidity-level">${weather.current.humidity_level || 'Moderate'}</span>
+                    </div>
+                    <div class="wind-info">
+                        <span>💨 ${weather.current.wind_speed} m/s</span>
+                        <span class="wind-description">${weather.current.wind_description || 'Light breeze'}</span>
+                    </div>
                 </div>
+                ${weather.current.google_maps_url ? 
+                    `<a href="${weather.current.google_maps_url}" target="_blank" class="map-link" style="display: inline-block; margin-top: 10px; padding: 8px 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-size: 0.875rem;">
+                        🗺️ View on Maps
+                    </a>` : ''
+                }
             </div>
     `;
     
-    // Add forecast cards
+    // Add forecast cards with enhanced details
     weather.forecast.slice(0, 4).forEach(day => {
+        const date = new Date(day.date);
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        
         weatherHTML += `
             <div class="weather-card">
-                <h4>${formatDate(day.date)}</h4>
+                <h4>${dayName}</h4>
                 <div class="temperature">${Math.round(day.temperature_max)}°/${Math.round(day.temperature_min)}°</div>
                 <div class="description">${day.description}</div>
-                <div style="margin-top: 10px; color: #6c757d; font-size: 0.9rem;">
-                    Humidity: ${day.humidity}%
+                <div class="weather-details">
+                    <div class="humidity-info">
+                        <span>💧 ${day.humidity}%</span>
+                        <span class="humidity-level">${day.humidity_level || 'Moderate'}</span>
+                    </div>
+                    <div class="wind-info">
+                        <span>💨 ${day.wind_speed} m/s</span>
+                        <span class="wind-description">${day.wind_description || 'Light breeze'}</span>
+                    </div>
                 </div>
             </div>
         `;
@@ -318,16 +338,37 @@ function displayWeather(weather) {
     
     weatherHTML += '</div>';
     
-    // Add weather recommendations
+    // Add weather recommendations with better styling
     if (weather.travel_recommendations) {
-        weatherHTML += '<div style="margin-top: 20px;"><h5>Weather Recommendations:</h5>';
-        if (weather.travel_recommendations.clothing && weather.travel_recommendations.clothing.length > 0) {
-            weatherHTML += `<p><strong>Clothing:</strong> ${weather.travel_recommendations.clothing.join(', ')}</p>`;
-        }
-        if (weather.travel_recommendations.precautions && weather.travel_recommendations.precautions.length > 0) {
-            weatherHTML += `<p><strong>Precautions:</strong> ${weather.travel_recommendations.precautions.join(', ')}</p>`;
-        }
-        weatherHTML += '</div>';
+        weatherHTML += `
+            <div class="recommendations-grid" style="margin-top: 30px;">
+                <div class="recommendation-card">
+                    <h5>👕 What to Wear</h5>
+                    <ul class="recommendation-list">
+                        ${weather.travel_recommendations.clothing ? 
+                            weather.travel_recommendations.clothing.map(item => `<li>${item}</li>`).join('') : 
+                            '<li>Comfortable clothing</li>'
+                        }
+                    </ul>
+                </div>
+                ${weather.travel_recommendations.precautions && weather.travel_recommendations.precautions.length > 0 ? `
+                    <div class="recommendation-card">
+                        <h5>⚠️ Precautions</h5>
+                        <ul class="recommendation-list">
+                            ${weather.travel_recommendations.precautions.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+                ${weather.travel_recommendations.best_times && weather.travel_recommendations.best_times.length > 0 ? `
+                    <div class="recommendation-card">
+                        <h5>🌟 Best Times</h5>
+                        <ul class="recommendation-list">
+                            ${weather.travel_recommendations.best_times.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </div>
+        `;
     }
     
     weatherContainer.innerHTML = weatherHTML;
@@ -343,22 +384,77 @@ function displayHotels(hotels) {
     
     let hotelsHTML = '<div class="hotels-grid">';
     
-    hotels.slice(0, 3).forEach(hotel => {
-        const stars = '★'.repeat(Math.floor(hotel.rating));
+    hotels.slice(0, 4).forEach(hotel => {
+        const stars = '⭐'.repeat(Math.floor(hotel.rating));
+        const remainingStars = '☆'.repeat(5 - Math.floor(hotel.rating));
         
         hotelsHTML += `
             <div class="hotel-card">
-                <h4>${hotel.name}</h4>
-                <div class="hotel-rating">${stars} ${hotel.rating}</div>
-                <div class="hotel-price">₹${hotel.price_per_night.toLocaleString('en-IN')}/night</div>
-                <p style="color: #6c757d; margin-bottom: 10px;">${hotel.location}</p>
-                <p style="font-size: 0.9rem; margin-bottom: 15px;">${hotel.description}</p>
-                <div class="hotel-amenities">
-                    ${hotel.amenities.map(amenity => `<span class="amenity-tag">${amenity}</span>`).join('')}
+                <div class="hotel-header">
+                    <div>
+                        <h4>${hotel.name}</h4>
+                        <div class="hotel-rating">
+                            ${stars}${remainingStars} ${hotel.rating}
+                            ${hotel.tripadvisor_rating ? 
+                                `<span style="margin-left: 8px; color: #00AF87; font-size: 0.75rem;">TripAdvisor: ${hotel.tripadvisor_rating}</span>` : 
+                                ''
+                            }
+                        </div>
+                        <div class="hotel-price">₹${hotel.price_per_night.toLocaleString('en-IN')}/night</div>
+                    </div>
                 </div>
+                
+                <div class="hotel-location">
+                    ${hotel.location}
+                    ${hotel.distance_to_center ? `• ${hotel.distance_to_center}km from center` : ''}
+                </div>
+                
+                ${hotel.address ? `
+                    <div class="hotel-address">${hotel.address}</div>
+                ` : ''}
+                
+                <p style="font-size: 0.95rem; margin-bottom: 15px; line-height: 1.5; color: #4b5563;">${hotel.description}</p>
+                
+                <div class="hotel-amenities">
+                    ${hotel.amenities.slice(0, 6).map(amenity => `<span class="amenity-tag">${amenity}</span>`).join('')}
+                    ${hotel.amenities.length > 6 ? `<span class="amenity-tag">+${hotel.amenities.length - 6} more</span>` : ''}
+                </div>
+                
                 ${hotel.accessibility && hotel.accessibility.length > 0 ? 
-                    `<div style="margin-top: 10px;">
-                        <small style="color: #28a745;"><i class="fas fa-wheelchair"></i> ${hotel.accessibility.join(', ')}</small>
+                    `<div style="margin-top: 12px; padding: 8px; background: #f0fdf4; border-radius: 8px; border-left: 3px solid #10b981;">
+                        <small style="color: #10b981; font-weight: 600;">
+                            ♿ Accessibility: ${hotel.accessibility.join(', ')}
+                        </small>
+                    </div>` : ''
+                }
+                
+                <div class="hotel-actions">
+                    ${hotel.google_maps_url ? 
+                        `<a href="${hotel.google_maps_url}" target="_blank" class="map-link">
+                            🗺️ View on Maps
+                        </a>` : 
+                        `<a href="https://www.google.com/maps/search/${encodeURIComponent(hotel.name + ' ' + (hotel.address || hotel.location))}" target="_blank" class="map-link">
+                            🗺️ Find Location
+                        </a>`
+                    }
+                    
+                    ${hotel.booking_sites && hotel.booking_sites.length > 0 ? 
+                        `<a href="https://${hotel.booking_sites[0]}/searchresults.html?ss=${encodeURIComponent(hotel.name)}" target="_blank" class="booking-link">
+                            🏨 Book Now
+                        </a>` : 
+                        `<a href="https://www.booking.com/searchresults.html?ss=${encodeURIComponent(hotel.name)}" target="_blank" class="booking-link">
+                            🏨 Book Now
+                        </a>`
+                    }
+                </div>
+                
+                ${hotel.booking_sites && hotel.booking_sites.length > 1 ? 
+                    `<div style="margin-top: 10px; text-align: center;">
+                        <small style="color: #6b7280;">Also available on: 
+                            ${hotel.booking_sites.slice(1, 3).map(site => 
+                                `<a href="https://${site}" target="_blank" style="color: #00AF87; text-decoration: none;">${site}</a>`
+                            ).join(', ')}
+                        </small>
                     </div>` : ''
                 }
             </div>

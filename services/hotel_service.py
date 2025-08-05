@@ -73,12 +73,16 @@ class HotelService:
                 'price_per_night': 12500,  # ₹12,500 per night
                 'location': 'City Center',
                 'city': 'Mumbai',
+                'address': 'Marine Drive, Nariman Point, Mumbai, Maharashtra 400021',
                 'max_occupancy': 4,
                 'amenities': ['WiFi', 'Pool', 'Spa', 'Restaurant', 'Gym', 'Room Service'],
                 'accessibility': ['Elevator', 'Wheelchair Access', 'Accessible Bathroom'],
-                'description': 'Luxury hotel in the heart of the city with excellent service',
+                'description': 'Luxury hotel in the heart of the city with excellent service and panoramic views of Marine Drive',
                 'image_url': 'https://via.placeholder.com/300x200',
-                'distance_to_center': 0.5
+                'distance_to_center': 0.5,
+                'google_maps_url': 'https://www.google.com/maps/search/Grand+Palace+Hotel+Marine+Drive+Mumbai',
+                'tripadvisor_rating': 4.5,
+                'booking_sites': ['booking.com', 'agoda.com', 'makemytrip.com']
             },
             {
                 'id': 2,
@@ -87,12 +91,16 @@ class HotelService:
                 'price_per_night': 3000,  # ₹3,000 per night
                 'location': 'Downtown',
                 'city': 'Delhi',
+                'address': 'Connaught Place, New Delhi, Delhi 110001',
                 'max_occupancy': 2,
                 'amenities': ['WiFi', 'Continental Breakfast', 'Air Conditioning'],
                 'accessibility': ['Elevator'],
-                'description': 'Clean and comfortable budget-friendly accommodation',
+                'description': 'Clean and comfortable budget-friendly accommodation in the heart of Delhi',
                 'image_url': 'https://via.placeholder.com/300x200',
-                'distance_to_center': 1.2
+                'distance_to_center': 1.2,
+                'google_maps_url': 'https://www.google.com/maps/search/Budget+Inn+Connaught+Place+Delhi',
+                'tripadvisor_rating': 3.8,
+                'booking_sites': ['booking.com', 'oyo.com', 'goibibo.com']
             },
             {
                 'id': 3,
@@ -101,12 +109,16 @@ class HotelService:
                 'price_per_night': 7200,  # ₹7,200 per night
                 'location': 'Historic District',
                 'city': 'Jaipur',
+                'address': 'City Palace Road, Pink City, Jaipur, Rajasthan 302002',
                 'max_occupancy': 3,
                 'amenities': ['WiFi', 'Restaurant', 'Bar', 'Concierge', 'Library'],
                 'accessibility': ['Elevator', 'Wheelchair Access'],
-                'description': 'Charming boutique hotel with historical character',
+                'description': 'Charming boutique hotel with historical character and traditional Rajasthani architecture',
                 'image_url': 'https://via.placeholder.com/300x200',
-                'distance_to_center': 0.8
+                'distance_to_center': 0.8,
+                'google_maps_url': 'https://www.google.com/maps/search/Heritage+Hotel+City+Palace+Jaipur',
+                'tripadvisor_rating': 4.3,
+                'booking_sites': ['booking.com', 'expedia.com', 'cleartrip.com']
             },
             {
                 'id': 4,
@@ -115,12 +127,16 @@ class HotelService:
                 'price_per_night': 5600,  # ₹5,600 per night
                 'location': 'Business District',
                 'city': 'Bangalore',
+                'address': 'MG Road, Brigade Road, Bangalore, Karnataka 560001',
                 'max_occupancy': 2,
                 'amenities': ['WiFi', 'Business Center', 'Gym', 'Restaurant', 'Laundry'],
                 'accessibility': ['Elevator', 'Wheelchair Access', 'Accessible Bathroom'],
-                'description': 'Contemporary hotel perfect for business travelers',
+                'description': 'Contemporary hotel perfect for business travelers with modern amenities and meeting facilities',
                 'image_url': 'https://via.placeholder.com/300x200',
-                'distance_to_center': 2.1
+                'distance_to_center': 2.1,
+                'google_maps_url': 'https://www.google.com/maps/search/Business+Hotel+MG+Road+Bangalore',
+                'tripadvisor_rating': 4.1,
+                'booking_sites': ['booking.com', 'agoda.com', 'yatra.com']
             },
             {
                 'id': 5,
@@ -129,12 +145,16 @@ class HotelService:
                 'price_per_night': 16000,  # ₹16,000 per night
                 'location': 'Beachfront',
                 'city': 'Goa',
+                'address': 'Calangute Beach, North Goa, Goa 403516',
                 'max_occupancy': 6,
                 'amenities': ['WiFi', 'Pool', 'Beach Access', 'Spa', 'Restaurant', 'Bar', 'Water Sports'],
                 'accessibility': ['Elevator', 'Wheelchair Access', 'Beach Wheelchair'],
-                'description': 'Luxury beachfront resort with stunning ocean views',
+                'description': 'Luxury beachfront resort with stunning ocean views and world-class amenities',
                 'image_url': 'https://via.placeholder.com/300x200',
-                'distance_to_center': 5.2
+                'distance_to_center': 5.2,
+                'google_maps_url': 'https://www.google.com/maps/search/Seaside+Resort+Calangute+Beach+Goa',
+                'tripadvisor_rating': 4.6,
+                'booking_sites': ['booking.com', 'expedia.com', 'makemytrip.com']
             },
             {
                 'id': 6,
@@ -143,12 +163,16 @@ class HotelService:
                 'price_per_night': 3800,  # ₹3,800 per night
                 'location': 'Residential Area',
                 'city': 'Kochi',
+                'address': 'Fort Kochi, Mattancherry, Kochi, Kerala 682001',
                 'max_occupancy': 2,
                 'amenities': ['WiFi', 'Breakfast Included', 'Garden', 'Parking'],
                 'accessibility': ['Ground Floor Rooms'],
-                'description': 'Intimate B&B with personalized service and homemade breakfast',
+                'description': 'Intimate B&B with personalized service and homemade breakfast in historic Fort Kochi',
                 'image_url': 'https://via.placeholder.com/300x200',
-                'distance_to_center': 3.5
+                'distance_to_center': 3.5,
+                'google_maps_url': 'https://www.google.com/maps/search/Bed+Breakfast+Fort+Kochi+Kerala',
+                'tripadvisor_rating': 4.2,
+                'booking_sites': ['airbnb.com', 'booking.com', 'zostel.com']
             },
             {
                 'id': 7,
@@ -157,12 +181,16 @@ class HotelService:
                 'price_per_night': 6400,  # ₹6,400 per night
                 'location': 'Mountain View',
                 'city': 'Manali',
+                'address': 'Mall Road, Old Manali, Manali, Himachal Pradesh 175131',
                 'max_occupancy': 4,
                 'amenities': ['WiFi', 'Fireplace', 'Restaurant', 'Hiking Trails', 'Spa'],
                 'accessibility': ['Elevator', 'Wheelchair Access'],
-                'description': 'Rustic lodge with breathtaking mountain views',
+                'description': 'Rustic lodge with breathtaking mountain views and adventure activities',
                 'image_url': 'https://via.placeholder.com/300x200',
-                'distance_to_center': 15.0
+                'distance_to_center': 15.0,
+                'google_maps_url': 'https://www.google.com/maps/search/Mountain+Lodge+Old+Manali+Himachal',
+                'tripadvisor_rating': 4.3,
+                'booking_sites': ['booking.com', 'goibibo.com', 'thrillophilia.com']
             },
             {
                 'id': 8,
@@ -171,12 +199,16 @@ class HotelService:
                 'price_per_night': 3400,  # ₹3,400 per night
                 'location': 'Near Airport',
                 'city': 'Chennai',
+                'address': 'GST Road, Near Chennai Airport, Chennai, Tamil Nadu 600027',
                 'max_occupancy': 3,
                 'amenities': ['WiFi', 'Shuttle Service', 'Restaurant', '24/7 Front Desk'],
                 'accessibility': ['Elevator', 'Wheelchair Access'],
-                'description': 'Convenient hotel for travelers with early flights',
+                'description': 'Convenient hotel for travelers with early flights, located just minutes from the airport',
                 'image_url': 'https://via.placeholder.com/300x200',
-                'distance_to_center': 20.0
+                'distance_to_center': 20.0,
+                'google_maps_url': 'https://www.google.com/maps/search/Airport+Hotel+Chennai+GST+Road',
+                'tripadvisor_rating': 3.7,
+                'booking_sites': ['booking.com', 'cleartrip.com', 'redbus.in']
             }
         ]
     

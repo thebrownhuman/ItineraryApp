@@ -10,30 +10,13 @@
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-map-marked-alt"></i> AI Itinerary Planner</h1>
-            <p>Create personalized travel itineraries with AI assistance</p>
+            <div class="header-simple">
+                <h1>🌍 AI Itinerary Planner ✈️</h1>
+                <p>Create personalized travel itineraries with AI assistance • Powered by Gemini AI 🚀</p>
+            </div>
         </header>
 
         <div class="main-content">
-            <!-- Step Indicator -->
-            <div class="step-indicator">
-                <div class="step active" data-step="1">
-                    <span class="step-number">1</span>
-                    <span class="step-title">Personal Info</span>
-                </div>
-                <div class="step" data-step="2">
-                    <span class="step-number">2</span>
-                    <span class="step-title">Travel Details</span>
-                </div>
-                <div class="step" data-step="3">
-                    <span class="step-number">3</span>
-                    <span class="step-title">Preferences</span>
-                </div>
-                <div class="step" data-step="4">
-                    <span class="step-number">4</span>
-                    <span class="step-title">Your Itinerary</span>
-                </div>
-            </div>
 
             <!-- Step 1: Personal Information -->
             <div class="form-step active" id="step1">
@@ -256,6 +239,88 @@
         </div>
     </div>
 
+    <!-- Footer with Copyright -->
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">@shivanshmishra</div>
+        </div>
+    </footer>
+
+    <!-- Easter Egg - Hidden Travel Surprise -->
+    <div class="easter-egg" onclick="triggerEasterEgg()" title="Click for a travel surprise! 🎉">
+        ✈️
+    </div>
+
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    
+    <!-- Enhanced JavaScript for Easter Egg -->
+    <script>
+        function triggerEasterEgg() {
+            const easterEgg = document.querySelector('.easter-egg');
+            const surprises = [
+                '🎉 Bon Voyage! Safe travels!',
+                '🌟 Did you know? The word "travel" comes from the French word "travail" meaning work!',
+                '🗺️ Adventure awaits around every corner!',
+                '✨ The world is your playground!',
+                '🎒 Collect moments, not things!',
+                '🌍 Life is short, take the trip!',
+                '🏖️ Paradise found in your next destination!',
+                '🎯 Travel is the only thing you buy that makes you richer!'
+            ];
+            
+            const randomSurprise = surprises[Math.floor(Math.random() * surprises.length)];
+            
+            // Create floating message
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #00AF87 0%, #FF6B6B 100%);
+                color: white;
+                padding: 20px 30px;
+                border-radius: 20px;
+                font-size: 1.2rem;
+                font-weight: 600;
+                z-index: 10000;
+                animation: easterEggPop 3s ease-in-out forwards;
+                text-align: center;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                backdrop-filter: blur(10px);
+            `;
+            messageDiv.innerHTML = randomSurprise;
+            document.body.appendChild(messageDiv);
+            
+            // Remove message after animation
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+            }, 3000);
+            
+            // Animate easter egg
+            easterEgg.style.animation = 'none';
+            setTimeout(() => {
+                easterEgg.style.animation = 'bobbing 3s ease-in-out infinite';
+            }, 100);
+        }
+        
+        // Add CSS animation for easter egg popup
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes easterEggPop {
+                0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 0; }
+                20% { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); opacity: 1; }
+                80% { transform: translate(-50%, -50%) scale(1) rotate(-5deg); opacity: 1; }
+                100% { transform: translate(-50%, -50%) scale(0.8) rotate(0deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Add subtle background animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Removed distracting floating particles for cleaner design
+            console.log('AI Itinerary Planner loaded successfully');
+        });
+    </script>
 </body>
 </html>
