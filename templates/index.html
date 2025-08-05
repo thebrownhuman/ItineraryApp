@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Itinerary Planner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-map-marked-alt"></i> AI Itinerary Planner</h1>
+            <p>Create personalized travel itineraries with AI assistance</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step active" data-step="1">
+                    <span class="step-number">1</span>
+                    <span class="step-title">Personal Info</span>
+                </div>
+                <div class="step" data-step="2">
+                    <span class="step-number">2</span>
+                    <span class="step-title">Travel Details</span>
+                </div>
+                <div class="step" data-step="3">
+                    <span class="step-number">3</span>
+                    <span class="step-title">Preferences</span>
+                </div>
+                <div class="step" data-step="4">
+                    <span class="step-number">4</span>
+                    <span class="step-title">Your Itinerary</span>
+                </div>
+            </div>
+
+            <!-- Step 1: Personal Information -->
+            <div class="form-step active" id="step1">
+                <h2>Tell us about yourself</h2>
+                <form id="personalInfoForm">
+                    <div class="form-group">
+                        <label for="name">Your Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="travelType">Travel Type *</label>
+                        <select id="travelType" name="travel_type" required>
+                            <option value="">Select travel type</option>
+                            <option value="alone">Traveling Alone</option>
+                            <option value="couple">Couple</option>
+                            <option value="group">Group/Family</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="companionsGroup" style="display: none;">
+                        <label for="companions">Number of People (including yourself) *</label>
+                        <input type="number" id="companions" name="companions" min="1" max="20" value="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Health Conditions (Optional)</label>
+                        <p class="form-help">Select any conditions we should consider for accessibility</p>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="health_conditions" value="mobility_issues">
+                                <span class="checkbox-custom"></span>
+                                Mobility/Leg Issues
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="health_conditions" value="heart_condition">
+                                <span class="checkbox-custom"></span>
+                                Heart Condition
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="health_conditions" value="respiratory_issues">
+                                <span class="checkbox-custom"></span>
+                                Lung/Respiratory Issues
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="health_conditions" value="other">
+                                <span class="checkbox-custom"></span>
+                                Other Health Considerations
+                            </label>
+                        </div>
+                        <div id="otherHealthCondition" style="display: none;">
+                            <input type="text" placeholder="Please specify..." name="other_health_condition">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" onclick="nextStep(1)">
+                            Continue <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: Travel Details -->
+            <div class="form-step" id="step2">
+                <h2>Travel Details</h2>
+                <form id="travelDetailsForm">
+                    <div class="form-group">
+                        <label for="destination">Destination *</label>
+                        <input type="text" id="destination" name="destination" placeholder="e.g., Paris, Tokyo, New York" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="days">Number of Days *</label>
+                        <input type="number" id="days" name="days" min="1" max="30" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget">Budget Range *</label>
+                        <select id="budget" name="budget_range" required>
+                            <option value="">Select budget range</option>
+                            <option value="low">Budget-Friendly (₹2,000-4,000/day)</option>
+                            <option value="medium">Moderate (₹4,000-8,000/day)</option>
+                            <option value="high">Luxury (₹8,000+/day)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(2)">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                            Continue <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 3: Interests and Preferences -->
+            <div class="form-step" id="step3">
+                <h2>What interests you?</h2>
+                <form id="preferencesForm">
+                    <div class="form-group">
+                        <label>Select your interests *</label>
+                        <p class="form-help">Choose all that apply</p>
+                        <div class="interests-grid">
+                            <label class="interest-card">
+                                <input type="checkbox" name="interests" value="museums">
+                                <div class="interest-content">
+                                    <i class="fas fa-university"></i>
+                                    <span>Museums & Galleries</span>
+                                </div>
+                            </label>
+                            <label class="interest-card">
+                                <input type="checkbox" name="interests" value="parks">
+                                <div class="interest-content">
+                                    <i class="fas fa-tree"></i>
+                                    <span>Parks & Nature</span>
+                                </div>
+                            </label>
+                            <label class="interest-card">
+                                <input type="checkbox" name="interests" value="restaurants">
+                                <div class="interest-content">
+                                    <i class="fas fa-utensils"></i>
+                                    <span>Food & Dining</span>
+                                </div>
+                            </label>
+                            <label class="interest-card">
+                                <input type="checkbox" name="interests" value="shopping">
+                                <div class="interest-content">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    <span>Shopping</span>
+                                </div>
+                            </label>
+                            <label class="interest-card">
+                                <input type="checkbox" name="interests" value="nightlife">
+                                <div class="interest-content">
+                                    <i class="fas fa-cocktail"></i>
+                                    <span>Nightlife</span>
+                                </div>
+                            </label>
+                            <label class="interest-card">
+                                <input type="checkbox" name="interests" value="beaches">
+                                <div class="interest-content">
+                                    <i class="fas fa-umbrella-beach"></i>
+                                    <span>Beaches</span>
+                                </div>
+                            </label>
+                            <label class="interest-card">
+                                <input type="checkbox" name="interests" value="adventure">
+                                <div class="interest-content">
+                                    <i class="fas fa-mountain"></i>
+                                    <span>Adventure Sports</span>
+                                </div>
+                            </label>
+                            <label class="interest-card">
+                                <input type="checkbox" name="interests" value="culture">
+                                <div class="interest-content">
+                                    <i class="fas fa-theater-masks"></i>
+                                    <span>Culture & History</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(3)">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="generateItinerary()">
+                            Generate Itinerary <i class="fas fa-magic"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 4: Generated Itinerary -->
+            <div class="form-step" id="step4">
+                <div id="loadingState" class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <h2>Creating your perfect itinerary...</h2>
+                    <p>We're checking the weather, finding great hotels, and crafting personalized recommendations just for you!</p>
+                </div>
+
+                <div id="itineraryResult" class="itinerary-result" style="display: none;">
+                    <!-- Weather Section -->
+                    <div class="weather-section">
+                        <h3><i class="fas fa-cloud-sun"></i> Weather Forecast</h3>
+                        <div id="weatherInfo"></div>
+                    </div>
+
+                    <!-- Hotels Section -->
+                    <div class="hotels-section">
+                        <h3><i class="fas fa-bed"></i> Recommended Hotels</h3>
+                        <div id="hotelsInfo"></div>
+                    </div>
+
+                    <!-- Itinerary Section -->
+                    <div class="itinerary-section">
+                        <h3><i class="fas fa-calendar-alt"></i> Your Personalized Itinerary</h3>
+                        <div id="itineraryDetails"></div>
+                    </div>
+
+                    <!-- Recommendations Section -->
+                    <div class="recommendations-section">
+                        <h3><i class="fas fa-lightbulb"></i> Travel Tips & Recommendations</h3>
+                        <div id="recommendationsInfo"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="startOver()">
+                            <i class="fas fa-redo"></i> Plan Another Trip
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="printItinerary()">
+                            <i class="fas fa-print"></i> Print Itinerary
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
